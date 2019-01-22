@@ -91,8 +91,18 @@ module Awspec::Type
 
     def cidr_opened?(permission, cidr)
       return true unless cidr
+      ret = permission.prefix_list_ids.select do |prefix_list_id|
+        prefix_list_id.prefix_list_id == cidr
+      end
+      return true if ret.count > 0
       ret = permission.ip_ranges.select do |ip_range|
-        ip_range.cidr_ip == cidr
+        # if the cidr is an IP address then do a true CIDR match
+        if cidr =~ /^\d+\.\d+\.\d+\.\d+/
+          net = IPAddress::IPv4.new(ip_range.cidr_ip)
+          net.include?(IPAddress::IPv4.new(cidr))
+        else
+          ip_range.cidr_ip == cidr
+        end
       end
       return true if ret.count > 0
       ret = permission.user_id_group_pairs.select do |sg|

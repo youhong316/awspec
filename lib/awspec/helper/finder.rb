@@ -1,4 +1,5 @@
 require 'aws-sdk'
+require 'awspec/helper/finder/nlb'
 require 'awspec/helper/finder/alb'
 require 'awspec/helper/finder/vpc'
 require 'awspec/helper/finder/subnet'
@@ -13,6 +14,7 @@ require 'awspec/helper/finder/s3'
 require 'awspec/helper/finder/autoscaling'
 require 'awspec/helper/finder/ebs'
 require 'awspec/helper/finder/elb'
+require 'awspec/helper/finder/firehose'
 require 'awspec/helper/finder/lambda'
 require 'awspec/helper/finder/iam'
 require 'awspec/helper/finder/kms'
@@ -32,11 +34,23 @@ require 'awspec/helper/finder/cloudwatch_logs'
 require 'awspec/helper/finder/dynamodb'
 require 'awspec/helper/finder/sqs'
 require 'awspec/helper/finder/cloudformation'
+require 'awspec/helper/finder/ssm_parameter'
+require 'awspec/helper/finder/codebuild'
+require 'awspec/helper/finder/apigateway'
+require 'awspec/helper/finder/kinesis'
+require 'awspec/helper/finder/batch'
+require 'awspec/helper/finder/eks'
+require 'awspec/helper/finder/sns_topic'
+require 'awspec/helper/finder/emr'
+require 'awspec/helper/finder/redshift'
 
 require 'awspec/helper/finder/account_attributes'
 
+require 'awspec/helper/client_wrap'
+
 module Awspec::Helper
   module Finder
+    include Awspec::Helper::Finder::Nlb
     include Awspec::Helper::Finder::Alb
     include Awspec::Helper::Finder::Vpc
     include Awspec::Helper::Finder::Subnet
@@ -44,6 +58,7 @@ module Awspec::Helper
     include Awspec::Helper::Finder::Ecr
     include Awspec::Helper::Finder::Ecs
     include Awspec::Helper::Finder::Efs
+    include Awspec::Helper::Finder::Firehose
     include Awspec::Helper::Finder::SecurityGroup
     include Awspec::Helper::Finder::Rds
     include Awspec::Helper::Finder::Route53
@@ -70,13 +85,23 @@ module Awspec::Helper
     include Awspec::Helper::Finder::CloudwatchLogs
     include Awspec::Helper::Finder::Dynamodb
     include Awspec::Helper::Finder::Sqs
+    include Awspec::Helper::Finder::SsmParameter
     include Awspec::Helper::Finder::Cloudformation
+    include Awspec::Helper::Finder::Codebuild
+    include Awspec::Helper::Finder::Apigateway
+    include Awspec::Helper::Finder::Kinesis
+    include Awspec::Helper::Finder::Batch
+    include Awspec::Helper::Finder::Eks
+    include Awspec::Helper::Finder::SNSTopic
+    include Awspec::Helper::Finder::Emr
+    include Awspec::Helper::Finder::Redshift
 
     CLIENTS = {
       ec2_client: Aws::EC2::Client,
       ecr_client: Aws::ECR::Client,
       ecs_client: Aws::ECS::Client,
       efs_client: Aws::EFS::Client,
+      firehose_client: Aws::Firehose::Client,
       rds_client: Aws::RDS::Client,
       route53_client: Aws::Route53::Client,
       s3_client: Aws::S3::Client,
@@ -101,7 +126,16 @@ module Awspec::Helper
       cloudwatch_logs_client: Aws::CloudWatchLogs::Client,
       dynamodb_client: Aws::DynamoDB::Client,
       sqs_client: Aws::SQS::Client,
-      cloudformation_client: Aws::CloudFormation::Client
+      ssm_client: Aws::SSM::Client,
+      cloudformation_client: Aws::CloudFormation::Client,
+      codebuild_client: Aws::CodeBuild::Client,
+      apigateway_client: Aws::APIGateway::Client,
+      kinesis_client: Aws::Kinesis::Client,
+      batch_client: Aws::Batch::Client,
+      eks_client: Aws::EKS::Client,
+      sns_client: Aws::SNS::Client,
+      emr_client: Aws::EMR::Client,
+      redshift_client: Aws::Redshift::Client
     }
 
     CLIENT_OPTIONS = {
@@ -111,7 +145,10 @@ module Awspec::Helper
     CLIENTS.each do |method_name, client|
       define_method method_name do
         unless self.methods.include? "@#{method_name}"
-          instance_variable_set("@#{method_name}", client.new(CLIENT_OPTIONS))
+          instance_variable_set(
+            "@#{method_name}",
+            Awspec::Helper::ClientWrap.new(client.new(CLIENT_OPTIONS))
+          )
         end
       end
     end

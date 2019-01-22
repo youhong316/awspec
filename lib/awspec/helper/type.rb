@@ -8,14 +8,18 @@ module Awspec
       require 'awspec/type/account_attribute'
 
       TYPES = %w(
-        alb ami autoscaling_group cloudtrail cloudwatch_alarm cloudwatch_event directconnect_virtual_interface
+        alb alb_listener alb_target_group ami apigateway autoscaling_group
+        batch_compute_environment batch_job_definition batch_job_queue cloudtrail
+        cloudwatch_alarm cloudwatch_event directconnect_virtual_interface
         ebs ec2 ecr_repository ecs_cluster ecs_container_instance ecs_service ecs_task_definition
-        efs elasticache elasticache_cache_parameter_group elasticsearch elb iam_group
-        iam_policy iam_role iam_user kms lambda launch_configuration nat_gateway
-        network_acl network_interface rds rds_db_cluster_parameter_group rds_db_parameter_group route53_hosted_zone
+        efs eks elasticache elasticache_cache_parameter_group elasticsearch elb emr firehose iam_group
+        iam_policy iam_role iam_user kinesis kms lambda launch_configuration launch_template nat_gateway
+        network_acl network_interface nlb nlb_listener nlb_target_group
+        rds rds_db_cluster_parameter_group rds_db_parameter_group route53_hosted_zone
         route_table s3_bucket security_group ses_identity subnet vpc cloudfront_distribution
         elastictranscoder_pipeline waf_web_acl customer_gateway vpn_gateway vpn_connection internet_gateway acm
-        cloudwatch_logs dynamodb_table eip sqs alb_listener alb_target_group cloudformation_stack
+        cloudwatch_logs dynamodb_table eip sqs ssm_parameter cloudformation_stack codebuild sns_topic redshift
+        redshift_cluster_parameter_group
       )
 
       ACCOUNT_ATTRIBUTES = %w(

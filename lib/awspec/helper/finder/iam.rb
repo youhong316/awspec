@@ -7,7 +7,7 @@ module Awspec::Helper
         define_method 'find_iam_' + type do |*args|
           id = args.first
           selected = []
-          res = iam_client.method('list_' + type.pluralize).call
+          res = iam_client.send('list_' + type.pluralize)
           loop do
             selected += res[type.pluralize].select do |u|
               u[type + '_name'] == id || u[type + '_id'] == id || u.arn == id
@@ -40,16 +40,18 @@ module Awspec::Helper
 
       %w(user group role).each do |type|
         define_method 'select_iam_policy_by_' + type + '_name' do |name|
-          res = iam_client.method('list_attached_' + type + '_policies').call({
-                                                                                (type + '_name').to_sym => name
-                                                                              })
+          res = iam_client.send(
+            'list_attached_' + type + '_policies',
+            { (type + '_name').to_sym => name }
+          )
           res.attached_policies
         end
 
         define_method 'select_inline_policy_by_' + type + '_name' do |name|
-          res = iam_client.method('list_' + type + '_policies').call({
-                                                                       (type + '_name').to_sym => name
-                                                                     })
+          res = iam_client.send(
+            'list_' + type + '_policies',
+            { (type + '_name').to_sym => name }
+          )
           res.policy_names
         end
       end
@@ -87,20 +89,20 @@ module Awspec::Helper
       end
 
       def select_all_iam_users
-        iam_client.list_users.map do |responce|
-          responce.users
+        iam_client.list_users.map do |response|
+          response.users
         end.flatten
       end
 
       def select_all_iam_groups
-        iam_client.list_groups.map do |responce|
-          responce.groups
+        iam_client.list_groups.map do |response|
+          response.groups
         end.flatten
       end
 
       def select_all_iam_roles
-        iam_client.list_roles.map do |responce|
-          responce.roles
+        iam_client.list_roles.map do |response|
+          response.roles
         end.flatten
       end
     end

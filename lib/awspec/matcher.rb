@@ -6,6 +6,8 @@ require 'awspec/matcher/have_network_interface'
 
 # RDS
 require 'awspec/matcher/belong_to_db_subnet_group'
+require 'awspec/matcher/have_db_parameter_group'
+require 'awspec/matcher/have_option_group'
 
 # SecurityGroup
 require 'awspec/matcher/be_opened'
@@ -41,6 +43,7 @@ require 'awspec/matcher/have_private_ip_address'
 
 # CloudFront
 require 'awspec/matcher/have_origin'
+require 'awspec/matcher/have_custom_response_error_code'
 
 # Kms
 require 'awspec/matcher/have_key_policy'
@@ -60,3 +63,23 @@ require 'awspec/matcher/belong_to_domain'
 
 # Alb Target Group
 require 'awspec/matcher/belong_to_alb'
+
+# Nlb Target Group
+require 'awspec/matcher/belong_to_nlb'
+
+# VPC
+require 'awspec/matcher/be_connected_to_vpc'
+require 'awspec/matcher/have_vpc_peering_connection'
+
+# SNSTopic
+require 'awspec/matcher/include_subscribed'
+require 'awspec/matcher/have_subscription_attributes'
+
+# Redshift
+require 'awspec/matcher/belong_to_cluster_subnet_group'
+require 'awspec/matcher/have_cluster_parameter_group'
+
+# Lambda
+require 'awspec/matcher/have_env_vars'
+require 'awspec/matcher/have_env_var'
+require 'awspec/matcher/have_env_var_value'

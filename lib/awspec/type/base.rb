@@ -1,6 +1,7 @@
 require 'aws-sdk'
 require 'awspec/resource_reader'
 require 'awspec/helper/finder'
+require 'awspec/error'
 
 module Awspec::Type
   class Base
@@ -21,6 +22,10 @@ module Awspec::Type
       to_s
     end
 
+    def respond_to_missing?(method, include_private = false)
+      resource_via_client.respond_to?(method) || super unless resource_via_client.nil?
+    end
+
     def self.tags_allowed
       define_method :has_tag? do |key, value|
         begin
@@ -36,12 +41,23 @@ module Awspec::Type
     def method_missing(name)
       name_str = name.to_s if name.class == Symbol
       describe = name_str.tr('-', '_').to_sym
+
       if !resource_via_client.nil? && resource_via_client.members.include?(describe)
         resource_via_client[describe]
+      elsif resource_via_client.nil?
+        raise Awspec::NoExistingResource.new(self.class, @display_name)
       else
         super unless self.respond_to?(:resource)
         method_missing_via_black_list(name, delegate_to: resource)
       end
+    end
+
+    undef :timeout
+
+    private
+
+    def check_existence
+      raise Awspec::NoExistingResource.new(self.class, @display_name) if resource_via_client.nil?
     end
   end
 end

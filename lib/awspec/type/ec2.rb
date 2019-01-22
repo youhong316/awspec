@@ -16,6 +16,10 @@ module Awspec::Type
       @id ||= resource_via_client.instance_id if resource_via_client
     end
 
+    def security_group_count
+      resource_via_client.security_groups.count
+    end
+
     STATES = %w(
       pending running shutting-down
       terminated stopping stopped
@@ -126,6 +130,11 @@ module Awspec::Type
         sg.group_id == sg_id || sg.group_name == sg_id
       end
       return true if ret
+    end
+
+    def has_credit_specification?(cpu_credits)
+      ret = find_ec2_credit_specifications(id)
+      ret.cpu_credits == cpu_credits
     end
 
     private

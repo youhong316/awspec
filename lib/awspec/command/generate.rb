@@ -8,8 +8,8 @@ module Awspec
     class_option :secrets_path
 
     types = %w(
-      vpc ec2 rds security_group elb network_acl route_table subnet nat_gateway network_interface alb
-      internet_gateway
+      vpc ec2 rds security_group elb network_acl route_table subnet nat_gateway network_interface alb nlb
+      internet_gateway autoscaling_group alb_listener nlb_listener redshift
     )
 
     types.each do |type|
@@ -36,10 +36,22 @@ module Awspec
       end
     end
 
+    types = %w(
+      rds_db_parameter_group rds_db_cluster_parameter_group redshift_cluster_parameter_group
+    )
+
+    types.each do |type|
+      desc type + ' [parameter_group_name]', "Generate #{type} spec from parameter group name."
+      define_method type do |_parameter_group_name|
+        Awsecrets.load(profile: options[:profile], region: options[:region], secrets_path: options[:secrets_path])
+        eval "puts Awspec::Generator::Spec::#{type.camelize}.new.generate_by_parameter_group(_parameter_group_name)"
+      end
+    end
+
     types_for_generate_all = %w(
       cloudwatch_alarm cloudwatch_event directconnect ebs efs
       elasticsearch iam_group iam_policy iam_role iam_user kms lambda
-      acm cloudwatch_logs eip
+      acm cloudwatch_logs eip codebuild
     )
 
     types_for_generate_all.each do |type|

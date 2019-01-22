@@ -37,6 +37,43 @@ Aws.config[:elasticloadbalancing] = {
           vpc_id: 'vpc-ab123cde'
         }
       ]
+    },
+    describe_tags: {
+      tag_descriptions: [
+        {
+          load_balancer_name: 'my-elb',
+          tags: [
+            {
+              key: 'Name',
+              value: 'my-elb'
+            },
+            {
+              key: 'my-tag-key',
+              value: 'my-tag-value'
+            }
+          ]
+        }
+      ]
+    },
+    describe_load_balancer_attributes: {
+      load_balancer_attributes: {
+        access_log: {
+          enabled: true,
+          s3_bucket_name: 'my-loadbalancer-logs',
+          s3_bucket_prefix: 'my-app',
+          emit_interval: 5
+        },
+        connection_draining: {
+          enabled: false,
+          timeout: 300
+        },
+        connection_settings: {
+          idle_timeout: 60
+        },
+        cross_zone_load_balancing: {
+          enabled: false
+        }
+      }
     }
   }
 }

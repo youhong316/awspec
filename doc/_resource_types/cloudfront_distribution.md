@@ -14,6 +14,29 @@ describe cloudfront_distribution('123456789zyxw.cloudfront.net') do
 end
 ```
 
+### have_custom_response_error_code
+
+```ruby
+describe cloudfront_distribution('123456789zyxw.cloudfront.net') do
+  it do
+    should have_custom_response_error_code(400)
+      .error_caching_min_ttl(60)
+      .response_page_path('/path/to/400.html')
+      .response_code(400)
+  end
+  it do
+    should have_custom_response_error_code(403)
+      .error_caching_min_ttl(60)
+      .response_page_path('/path/to/403.html')
+      .response_code('403')
+  end
+  it do
+    should have_custom_response_error_code(500)
+      .error_caching_min_ttl(60)
+  end
+end
+```
+
 ### have_origin
 
 ```ruby

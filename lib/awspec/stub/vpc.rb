@@ -64,6 +64,51 @@ Aws.config[:ec2] = {
           ]
         }
       ]
+    },
+    describe_vpc_peering_connections: {
+      vpc_peering_connections: [
+        {
+          vpc_peering_connection_id: 'pcx-c56789de',
+          accepter_vpc_info: {
+            cidr_block: nil,
+            ipv_6_cidr_block_set: [],
+            cidr_block_set: [],
+            owner_id: '123453345554',
+            peering_options: nil,
+            vpc_id: 'vpc-ab123cde',
+            region: 'ap-northeast-1'
+          },
+          expiration_time: nil,
+          requester_vpc_info: {
+            cidr_block: nil,
+            ipv_6_cidr_block_set: [],
+            cidr_block_set: [],
+            owner_id: '192912349399',
+            peering_options: nil,
+            vpc_id: 'vpc-bcd1235e',
+            region: 'ap-northeast-1'
+          },
+          status: {
+            code: 'active',
+            message: 'Active'
+          },
+          tags: [
+            {
+              key: 'Name',
+              value: 'my-pcx'
+            }
+          ]
+        }
+      ]
+    },
+    describe_vpc_attribute: {
+      vpc_id: 'vpc-bcd1235e',
+      enable_dns_hostnames: {
+        value: true
+      },
+      enable_dns_support: {
+        value: false
+      }
     }
   }
 }

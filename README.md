@@ -1,4 +1,4 @@
-# awspec [![Gem](https://img.shields.io/gem/v/awspec.svg)](https://rubygems.org/gems/awspec) [![Travis](https://img.shields.io/travis/k1LoW/awspec.svg)](https://travis-ci.org/k1LoW/awspec) [![Scrutinizer](https://img.shields.io/scrutinizer/g/k1LoW/awspec.svg)](https://scrutinizer-ci.com/g/k1LoW/awspec/) [![Gemnasium](https://img.shields.io/gemnasium/k1LoW/awspec.svg)](https://gemnasium.com/k1LoW/awspec)
+# awspec [![Gem](https://img.shields.io/gem/v/awspec.svg)](https://rubygems.org/gems/awspec) [![Travis](https://img.shields.io/travis/k1LoW/awspec.svg)](https://travis-ci.org/k1LoW/awspec)
 
 ![Logo](./awspec-logo.png)
 
@@ -28,7 +28,16 @@ Or install it yourself as:
 
 ### STEP 1. Generate awspec init files
 
+If you're starting on a fresh RSpec project, you can use awspec to generate your init files:
+
     $ awspec init
+
+If you're working on an exisitng RSpec project, you will need to add the following lines to your `spec_helper.rb` file:
+
+```ruby
+require 'awspec'
+Awsecrets.load(secrets_path: File.expand_path('./secrets.yml', File.dirname(__FILE__)))
+```
 
 ### STEP 2. Set AWS config
 
@@ -88,6 +97,7 @@ end
 ```
 
 ### STEP 4. Run tests
+Add gem "rake" in your Gemfile if you are starting a blank project.
 
     $ bundle exec rake spec
 
@@ -97,6 +107,11 @@ Generate spec from AWS resources already exists.
 
 ```sh
 $ awspec generate ec2 vpc-ab123cde >> spec/ec2_spec.rb
+```
+
+Make sure you have added in your spec file
+```ruby
+require 'spec_helper'
 ```
 
 ### Advanced Tips: Use Shared Credentials (~/.aws/config ~/.aws/credentials)

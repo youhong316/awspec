@@ -1,6 +1,15 @@
 AllCops:
   TargetRubyVersion: 2.1
 
+Layout/IndentHeredoc:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+
 Lint/HandleExceptions:
   Enabled: false
 
@@ -10,11 +19,11 @@ Lint/UselessAssignment:
 Metrics/AbcSize:
   Max: 50
 
-Metrics/ClassLength:
-  Max: 120
-
 Metrics/BlockLength:
   Max: 60
+
+Metrics/ClassLength:
+  Max: 130
 
 Metrics/CyclomaticComplexity:
   Max: 15
@@ -32,6 +41,9 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 15
 
+Style/PredicateName:
+  Enabled: false
+
 Performance/StringReplacement:
   Enabled: false
 
@@ -42,6 +54,9 @@ Style/Alias:
   Enabled: false
 
 Style/BarePercentLiterals:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -56,12 +71,6 @@ Style/MethodMissing:
 Style/MutableConstant:
   Enabled: false
 
-Style/MultilineOperationIndentation:
-  Enabled: false
-
-Style/MultilineMethodCallBraceLayout:
-  Enabled: false
-
 Style/NumericLiteralPrefix:
   Enabled: false
 
@@ -74,14 +83,11 @@ Style/StabbyLambdaParentheses:
 Style/PercentLiteralDelimiters:
   Enabled: false
 
-Style/PredicateName:
-  Enabled: false
-
 Style/RedundantSelf:
   Enabled: false
 
 Style/SymbolProc:
   Enabled: false
 
-Style/BracesAroundHashParameters:
+Style/YodaCondition:
   Enabled: false
